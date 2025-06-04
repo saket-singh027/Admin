@@ -1,0 +1,6 @@
+syntax = "proto3";
+package admin;
+
+service AdminService {
+  // Define admin RPC methods here
+}

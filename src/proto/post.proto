@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package post;
+
+service PostService {
+    rpc allPosts(Empty)returns (PostList);
+    rpc reportedPosts(Empty) returns (PostList);
+    rpc FlagPost(FlagPostRequest) returns (PostResponse);
+    rpc DeletePost(PostIdRequest) returns (PostResponse);
+}
+
+message Empty{}
+
+message Post{
+    string postId=1;
+    string userId=2;
+    string content=3;
+    string created_at=4;
+    string is_reported=5;
+    string reason=6;
+}
+
+message PostList{
+    repeated Post posts=1;
+}
+
+message PostResponse{
+    string message =1;
+    bool success =2;
+}
+
+message FlagPostRequest{
+    string postId=1;
+    string reason=2;
+}
+
+message PostIdRequest{
+    string postId=1;
+}

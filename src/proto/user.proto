@@ -1,0 +1,40 @@
+syntax="proto3";
+
+package user;
+
+service UserService{
+    rpc GetUser(GetUserRequest) returns (UserResponse);
+    rpc GetAllUsers(Empty) returns (UserListResponse);
+    rpc BlockUser(GetUserRequest) returns (UserResponse);
+    rpc GetTopInfluencer(Empty) returns (UserListResponse);
+}
+
+
+message Empty{};
+
+message GetUserRequest{
+    string userId=1;
+    string requesterRole=2;
+}
+
+message User{
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    bool isBlocked =4;
+    int32 followerCount=5;
+}
+
+message BlockUserRequest {
+    string currentUserId = 1;
+    string userIdToBlock = 2;
+  }
+
+message UserResponse{
+    User user=1;
+}
+
+message UserListResponse{
+    repeated User users=1;
+    int32 count =2;
+}
