@@ -1,9 +1,14 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AdminModule } from './admin.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import * as path from 'path';
+import { AUTH_SERVICE_NAME } from './generated/auth';
 async function bootstrap() {
   const app = await NestFactory.create(AdminModule);
+  // const reflector = app.get(Reflector);
+
+  // const reflector = app.get(Reflector);
+  // app.useGlobalGuards(new GrpcAuthGuard(reflector, app.get(AUTH_SERVICE_NAME)));
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,

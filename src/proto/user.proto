@@ -3,38 +3,79 @@ syntax="proto3";
 package user;
 
 service UserService{
-    rpc GetUser(GetUserRequest) returns (UserResponse);
-    rpc GetAllUsers(Empty) returns (UserListResponse);
-    rpc BlockUser(GetUserRequest) returns (UserResponse);
-    rpc GetTopInfluencer(Empty) returns (UserListResponse);
+    rpc FindOne(FindOneRequest) returns (UserResponse);
+    // get user by name 
+    rpc FindByEmail(FindByEmailRequest) returns (UserResponse);
+    rpc FindAll(FindAllRequest) returns (UsersResponse);
+    rpc GetFollowers(GetFollowersRequest) returns (UsersResponse);
+    rpc GetFollowing(GetFollowingRequest) returns (UsersResponse);
+    rpc FindByUsername(FindByUsernameRequest) returns (UserResponse);
+    // rpc GetTopInfluencer(Empty) returns (UsersResponse);
 }
+service AdminService {
+  rpc BanUser(BanUserRequest) returns (UserResponse) {}
 
+  rpc UnbanUser(UnbanUserRequest) returns (UserResponse) {}
+}
 
 message Empty{};
 
-message GetUserRequest{
-    string userId=1;
-    string requesterRole=2;
+message FindOneRequest {
+  string id = 1;
 }
 
-message User{
-    string id = 1;
-    string name = 2;
-    string email = 3;
-    bool isBlocked =4;
-    int32 followerCount=5;
+message BanUserRequest {
+  string adminId = 1;
+  string targetId = 2;
+  optional string reason = 3;
 }
 
-message BlockUserRequest {
-    string currentUserId = 1;
-    string userIdToBlock = 2;
-  }
-
-message UserResponse{
-    User user=1;
+message UnbanUserRequest {
+  string adminId = 1;
+  string targetId = 2;
 }
 
-message UserListResponse{
-    repeated User users=1;
-    int32 count =2;
+message GetFollowersRequest {
+  string userId = 1;
+}
+
+message GetFollowingRequest {
+  string userId = 1;
+}
+
+message FindByUsernameRequest {
+  string username = 1;
+}
+
+message UserResponse {
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string fullName = 4;
+  string bio = 5;
+  string accountType = 6;
+  string profilePicture = 7;
+  int32 followersCount = 8;
+  int32 followingCount = 9;
+  repeated string followers = 10;
+  repeated string following = 11;
+  repeated string posts = 12;
+  repeated string blockedUsers = 13;
+  bool isBanned = 14; 
+  optional string banReason = 15; 
+  
+}
+
+message FindAllRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message FindByEmailRequest {
+  string email = 1;
+}
+
+message UsersResponse {
+  repeated UserResponse users = 1;
+  int32 totalCount = 2;
 }

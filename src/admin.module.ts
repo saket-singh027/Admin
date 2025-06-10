@@ -6,8 +6,14 @@ import { AUTH_SERVICE_NAME } from './generated/auth';
 import { USER_SERVICE_NAME } from './generated/user';
 import { POST_SERVICE_NAME } from './generated/post';
 import * as path from 'path';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Admin, adminSchema } from './schemas/admin.schema';
+import { AdminGuard } from './common/guards/admin.guard';
+
 @Module({
   imports: [
+    MongooseModule.forRoot('mongodb://localhost:27017/your-database-name'),
+    MongooseModule.forFeature([{ name: Admin.name, schema: adminSchema }]),
     ClientsModule.register([
       {
         name: AUTH_SERVICE_NAME,
@@ -15,7 +21,7 @@ import * as path from 'path';
         options: {
           package: 'auth',
           protoPath: path.join(path.resolve(), 'src/proto/auth.proto'),
-          url: 'localhost:5000',
+          url: 'localhost:50052',
         },
       },
       {
@@ -24,7 +30,7 @@ import * as path from 'path';
         options: {
           package: 'user',
           protoPath: path.join(path.resolve(), 'src/proto/user.proto'),
-          url: 'localhost 5001',
+          url: 'localhost:50051',
         },
       },
       {
@@ -33,12 +39,12 @@ import * as path from 'path';
         options: {
           package: 'post',
           protoPath: path.join(path.resolve(), 'src/proto/post.proto'),
-          url: 'localhost:5002',
+          url: 'localhost:50053',
         },
       },
     ]),
   ],
   controllers: [AdminController],
-  providers: [AdminService],
+  providers: [AdminService, AdminGuard],
 })
 export class AdminModule {}

@@ -10,36 +10,49 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth";
 
-export interface AuthRequest {
+export interface TokenPayload {
   userId: string;
-  password: string;
+  email: string;
   role: string;
+  deviceId: string;
   ipAddress: string;
-  postmanId: string;
+  userAgent: string;
 }
 
-export interface AuthResponse {
-  token: string;
-  message: string;
+export interface TokenResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface TokenValidationRequest {
+  accessToken: string;
+}
+
+export interface UserPayload {
+  userId: string;
+  email: string;
+  role: string;
+  issuedAt: number;
+  expiresAt: number;
 }
 
 export const AUTH_PACKAGE_NAME = "auth";
 
 export interface AuthServiceClient {
-  /** Generate token is the name of service to hit. */
+  generateToken(request: TokenPayload): Observable<TokenResponse>;
 
-  generateToken(request: AuthRequest): Observable<AuthResponse>;
+  validateToken(request: TokenValidationRequest): Observable<UserPayload>;
 }
 
 export interface AuthServiceController {
-  /** Generate token is the name of service to hit. */
+  generateToken(request: TokenPayload): Promise<TokenResponse> | Observable<TokenResponse> | TokenResponse;
 
-  generateToken(request: AuthRequest): Promise<AuthResponse> | Observable<AuthResponse> | AuthResponse;
+  validateToken(request: TokenValidationRequest): Promise<UserPayload> | Observable<UserPayload> | UserPayload;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["generateToken"];
+    const grpcMethods: string[] = ["generateToken", "validateToken"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
