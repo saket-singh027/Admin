@@ -3,21 +3,27 @@ syntax = "proto3";
 package post;
 
 service PostService {
-    rpc allPosts(Empty)returns (PostList);
-    rpc reportedPosts(Empty) returns (PostList);
+    rpc AllPosts(Empty)returns (PostList);
+    rpc ReportedPosts(Empty) returns (PostList);
     rpc FlagPost(FlagPostRequest) returns (PostResponse);
-    rpc DeletePost(PostIdRequest) returns (PostResponse);
+    rpc AdminDeletePost(PostIdRequest) returns (PostResponse);
 }
 
 message Empty{}
 
-message Post{
-    string postId=1;
-    string userId=2;
-    string content=3;
-    string created_at=4;
-    string is_reported=5;
-    string reason=6;
+message Post {
+  string id = 1;
+  string userId = 2;
+  string content = 3;
+  repeated string media = 4;
+  string visibility = 5;
+  bool deleted = 6;
+  bool moderated = 7;
+  repeated string keywords = 8;
+  string createdAt = 9;
+  string updatedAt = 10;
+  bool isReported = 11;
+  string reportReason = 12;
 }
 
 message PostList{
@@ -25,8 +31,7 @@ message PostList{
 }
 
 message PostResponse{
-    string message =1;
-    bool success =2;
+    Post post =1;
 }
 
 message FlagPostRequest{

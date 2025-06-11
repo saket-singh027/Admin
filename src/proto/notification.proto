@@ -10,16 +10,14 @@ service notificationService{
 message SendGlobalNotificationRequest{
     string title=1;
     string body =2;
-    string priority=3;
-    string sender=4 ; //eg. user or admin.
+    string sender=3 ; //eg. user or admin.
 }
 
 message SendUserNotification{
     string user_id=1;
     string title=2;
     string body=3;
-    string priority=4;
-    string sender=5;
+    string sender=4;
 }
 
 message NotificationResponse{

@@ -106,23 +106,23 @@ export class AdminController {
 
   // post controllers.
 
-  // @Get('all-posts')
-  // getAllPosts() {
-  //   return this.adminService.getAllPosts();
-  // }
+  @Get('all-posts')
+  getAllPosts() {
+    return this.adminService.allPosts();
+  }
 
-  // @Get('reported-posts')
-  // getReportedPosts() {
-  //   return this.adminService.reportedPost();
-  // }
+  @Get('reported-posts')
+  getReportedPosts() {
+    return this.adminService.reportedPosts();
+  }
 
-  // @Post('flag-post/:id')
-  // flagPost(@Param('id') id: string, @Body() body: string) {
-  //   return this.adminService.FlagPost(id, body);
-  // }
+  @Post('flag-post/:id')
+  flagPost(@Param('id') id: string, @Body() body: string) {
+    return this.adminService.FlagPost(id, body);
+  }
 
-  // @Post('delete-post')
-  // deletePost(@Param('id') id: string) {
-  //   return this.adminService.deletePost(id);
-  // }
+  @Post('delete-post/:id')
+  deletePost(@Param('id') id: string) {
+    return this.adminService.adminDeletePost(id);
+  }
 }

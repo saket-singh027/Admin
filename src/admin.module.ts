@@ -12,7 +12,9 @@ import { AdminGuard } from './common/guards/admin.guard';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/your-database-name'),
+    MongooseModule.forRoot(
+      'mongodb+srv://akshatsrivastava1:5mFEh9m2Xq3OMZh2@cluster0.cskfle2.mongodb.net/social_media',
+    ),
     MongooseModule.forFeature([{ name: Admin.name, schema: adminSchema }]),
     ClientsModule.register([
       {
@@ -39,7 +41,7 @@ import { AdminGuard } from './common/guards/admin.guard';
         options: {
           package: 'post',
           protoPath: path.join(path.resolve(), 'src/proto/post.proto'),
-          url: 'localhost:50053',
+          url: 'localhost:50055',
         },
       },
     ]),

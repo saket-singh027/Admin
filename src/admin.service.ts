@@ -23,7 +23,7 @@ import {
   POST_SERVICE_NAME,
   PostList,
   PostResponse,
-  postServiceClient,
+  PostServiceClient,
 } from './generated/post';
 import { InjectModel } from '@nestjs/mongoose';
 import { Admin, adminDocument } from './schemas/admin.schema';
@@ -34,7 +34,7 @@ export class AdminService implements OnModuleInit {
   private authService: AuthServiceClient;
   private userService: UserServiceClient;
   private userAdminService: AdminServiceClient;
-  private postService: postServiceClient;
+  private postService: PostServiceClient;
   constructor(
     @InjectModel(Admin.name) private adminModel: Model<adminDocument>,
     @Inject(AUTH_SERVICE_NAME) private readonly authClient: ClientGrpc,
@@ -50,7 +50,7 @@ export class AdminService implements OnModuleInit {
       this.userClient.getService<UserServiceClient>('UserService');
 
     this.postService =
-      this.postClient.getService<postServiceClient>('PostService');
+      this.postClient.getService<PostServiceClient>('PostService');
   }
 
   //Admin Seeding and Verification.
@@ -133,17 +133,23 @@ export class AdminService implements OnModuleInit {
     return this.userService.findByUsername({ username });
   }
 
-  // reportedPost(): Observable<PostList> {
-  //   return this.postService.reportedPosts({});
-  // }
+  // Post Service
 
-  // deletePost(postId: string): Observable<PostResponse> {
-  //   return this.postService.deletePost({ postId });
-  // }
+  allPosts(): Observable<PostList> {
+    return this.postService.AllPosts({});
+  }
 
-  // FlagPost(postId: string, reason: string): Observable<PostResponse> {
-  //   return this.postService.flagPost({ postId, reason });
-  // }
+  reportedPosts(): Observable<PostList> {
+    return this.postService.reportedPosts({});
+  }
+
+  adminDeletePost(postId: string): Observable<PostResponse> {
+    return this.postService.adminDeletePost({ postId });
+  }
+
+  FlagPost(postId: string, reason: string): Observable<PostResponse> {
+    return this.postService.flagPost({ postId, reason });
+  }
 
   // NOTIFICATION SERVICE
 }
