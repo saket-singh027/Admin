@@ -20,28 +20,60 @@ export interface TokenPayload {
 }
 
 export interface TokenResponse {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 export interface TokenValidationRequest {
-  accessToken: string;
+  access_token: string;
 }
 
 export interface UserPayload {
   userId: string;
   email: string;
   role: string;
-  issuedAt: number;
-  expiresAt: number;
+  issuedAt: string;
+  expiresAt: string;
+}
+
+export interface RegenerateAccessTokenRequest {
+  userId: string;
+  refreshToken: string;
+  deviceId?: string;
+}
+
+export interface RegenerateAccessTokenResponse {
+  access_token: string;
+}
+
+export interface LogoutRequest {
+  userId: string;
+  deviceId: string;
+}
+
+export interface LogoutResponse {
+  message: string;
+}
+
+export interface GoogleSignupRequest {
+  token: string;
+}
+
+export interface GoogleSignupResponse {
+  userId: string;
+  email: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 export const AUTH_PACKAGE_NAME = "auth";
 
 export interface AuthServiceClient {
   generateToken(request: TokenPayload): Observable<TokenResponse>;
-
   validateToken(request: TokenValidationRequest): Observable<UserPayload>;
+  logout(request: LogoutRequest): Observable<LogoutResponse>;
+  googleSignup(request: GoogleSignupRequest): Observable<GoogleSignupResponse>;
+  regenerateAccessToken(request: RegenerateAccessTokenRequest): Observable<RegenerateAccessTokenResponse>;
 }
 
 export interface AuthServiceController {

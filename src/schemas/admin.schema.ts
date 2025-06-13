@@ -10,8 +10,6 @@ export class Admin {
   @Prop({ required: true })
   password: string;
 
-  @Prop({ required: true })
-  adminId: string;
 }
 
 export const adminSchema = SchemaFactory.createForClass(Admin);
