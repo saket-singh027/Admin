@@ -8,7 +8,6 @@ import { POST_SERVICE_NAME } from './generated/post';
 import * as path from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Admin, adminSchema } from './schemas/admin.schema';
-import { AdminGuard } from './common/guards/admin.guard';
 
 @Module({
   imports: [
@@ -23,7 +22,7 @@ import { AdminGuard } from './common/guards/admin.guard';
         options: {
           package: 'auth',
           protoPath: path.join(path.resolve(), 'src/proto/auth.proto'),
-          url: 'localhost:50052',
+          url: '0.0.0.0:50052',
         },
       },
       {
@@ -32,7 +31,7 @@ import { AdminGuard } from './common/guards/admin.guard';
         options: {
           package: 'user',
           protoPath: path.join(path.resolve(), 'src/proto/user.proto'),
-          url: 'localhost:50051',
+          url: '0.0.0.0:50051',
         },
       },
       {
@@ -41,12 +40,21 @@ import { AdminGuard } from './common/guards/admin.guard';
         options: {
           package: 'post',
           protoPath: path.join(path.resolve(), 'src/proto/post.proto'),
-          url: 'localhost:50055',
+          url: '0.0.0.0:50055',
+        },
+      },
+      {
+        name: POST_SERVICE_NAME,
+        transport: Transport.GRPC,
+        options: {
+          package: 'post',
+          protoPath: path.join(path.resolve(), 'src/proto/post.proto'),
+          url: '0.0.0.0:50055',
         },
       },
     ]),
   ],
   controllers: [AdminController],
-  providers: [AdminService, AdminGuard],
+  providers: [AdminService],
 })
 export class AdminModule {}
